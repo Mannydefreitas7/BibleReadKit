@@ -14,7 +14,7 @@ public actor JWService {
     
     // Get bible translations
     @available(macOS 12.0, *)
-    public func getBibleEditions(for locale: String) async throws -> LangValue? {
+    public func getBibleEditions(locale: String) async throws -> LangValue? {
         do {
             guard let url = URL(string: API_URL) else {
                 print("Invalid URL")
@@ -31,11 +31,11 @@ public actor JWService {
     }
     // get bible books data
     @available(macOS 12.0, *)
-    public func getBible(for locale: String, with symbol: String) async throws -> JWBibleData? {
+    public func getBible(locale: String, symbol: String) async throws -> JWBibleData? {
         do {
             
                 // fetch bible editions
-                let bibleEditions: LangValue? = try await getBibleEditions(for: locale)
+                let bibleEditions: LangValue? = try await getBibleEditions(locale: locale)
                 if let bibleEditions {
                     // filter by symbol & get url
                     let edition: Edition? = bibleEditions.editions.filter { $0.symbol.rawValue == symbol }.first
@@ -84,10 +84,12 @@ public actor JWService {
         return nil
     }
     
+    
+    
     @available(macOS 12.0, *)
-    public func getRangeVerses(for locale: String, with symbol: String, from bookNumber: Int, and chapterNumber: Int) async throws -> JWRange? {
+    public func getRangeVerses(locale: String, symbol: String, bookNumber: Int, chapterNumber: Int) async throws -> JWRange? {
         do {
-            let bibleEditions: LangValue? = try await getBibleEditions(for: locale)
+            let bibleEditions: LangValue? = try await getBibleEditions(locale: locale)
             if let bibleEditions {
                 // filter by symbol & get url
                 let edition: Edition? = bibleEditions.editions.filter { $0.symbol.rawValue == symbol }.first

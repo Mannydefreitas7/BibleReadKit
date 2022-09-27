@@ -27,7 +27,6 @@ public actor WOLService {
         } catch {
             throw error
         }
-        return nil
     }
     
     @available(macOS 12.0, *)
@@ -62,14 +61,13 @@ public actor WOLService {
         } catch {
             throw error
         }
-        return nil
     }
     
     
     @available(macOS 12.0, *)
-    public func getBibleVerses(for locale: String, with bookNumber: Int, and chapterNumber: Int) async throws -> [WOLVerse]? {
+    public func getBibleVerses(locale: String, bookNumber: Int, chapterNumber: Int) async throws -> [WOLVerse]? {
         do {
-            let wolChapter: WOLChapter? = try await self.getBibleChapter(for: locale, with: bookNumber, and: chapterNumber)
+            let wolChapter: WOLChapter? = try await self.getBibleChapter(locale: locale, bookNumber: bookNumber, chapterNumber: chapterNumber)
             if let wolChapter {
                 let html = wolChapter.content
                 let elements: Array<Element>? = try self.parse(html: html)

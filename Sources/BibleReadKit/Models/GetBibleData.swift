@@ -54,6 +54,6 @@ public struct GetBibleChapter: Codable {
 
 // MARK: - Verse
 public struct GBVerse: Codable {
-    let chapter, verse: Int?
-    let name, text: String?
+    public let chapter, verse: Int?
+    public let name, text: String?
 }

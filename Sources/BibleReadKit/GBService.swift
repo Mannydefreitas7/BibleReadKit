@@ -12,7 +12,7 @@ public actor GBService {
     static public var shared = GBService()
     private let domain: String = "https://getbible.net"
     @available(macOS 12.0, *)
-    public func getBibleTranslations(for locale: String) async throws -> [BibleTranslation]? {
+    public func getBibleTranslations(locale: String) async throws -> [BibleTranslation]? {
         do {
             let API_URL = "\(domain)/v2/translations.json"
             guard let url = URL(string: API_URL) else {
@@ -31,7 +31,7 @@ public actor GBService {
     }
     
     @available(macOS 12.0, *)
-    public func getBibleBooks(for symbol: String) async throws -> [GetBibleBook]? {
+    public func getBibleBooks(symbol: String) async throws -> [GetBibleBook]? {
         do {
             let API_URL = "\(domain)/v2/\(symbol)/books.json"
             guard let url = URL(string: API_URL) else {
@@ -48,7 +48,7 @@ public actor GBService {
     }
     
     @available(macOS 12.0, *)
-    public func getChapters(for symbol: String, from bookNumber: Int) async throws -> GetBibleBook? {
+    public func getBookChapters(symbol: String, bookNumber: Int) async throws -> GetBibleBook? {
         do {
             let API_URL = "\(domain)/v2/\(symbol)/\(bookNumber).json"
             guard let url = URL(string: API_URL) else {
@@ -57,6 +57,23 @@ public actor GBService {
             }
             let (data, _) = try await URLSession.shared.data(from: url)
             let decodedResponse = try JSONDecoder().decode(GetBibleBook.self, from: data)
+            return decodedResponse
+        } catch {
+            throw error
+        }
+    }
+    
+    
+    @available(macOS 12.0, *)
+    public func getChapter(symbol: String, bookNumber: Int, chapterNumber: Int) async throws -> GetBibleChapter? {
+        do {
+            let API_URL = "\(domain)/v2/\(symbol)/\(bookNumber)/\(chapterNumber).json"
+            guard let url = URL(string: API_URL) else {
+                print("Invalid URL")
+                return nil
+            }
+            let (data, _) = try await URLSession.shared.data(from: url)
+            let decodedResponse = try JSONDecoder().decode(GetBibleChapter.self, from: data)
             return decodedResponse
         } catch {
             throw error

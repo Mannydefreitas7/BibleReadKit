@@ -19,8 +19,8 @@ public struct WOLLanguages: Codable {
 public struct WOLVerse: Codable {
     public var uid: String?
     public var chapter: Int?
-    var verseNumber: Int?
-    var content: String?
+    public var verseNumber: Int?
+    public var content: String?
 }
 
 // MARK: - Item
