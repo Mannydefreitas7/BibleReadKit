@@ -1,11 +1,13 @@
 public struct BibleReadKit {
     
-    public let jwService = JWService()
-    public let wolService = WOLService.instance
-    public let gbService = GBService()
+    public let jwService = JWService.shared
+    public let wolService = WOLService.shared
+    public let gbService = GBService.shared
     
     
-  
+    public init() {
+    
+    }
     
     
 }
