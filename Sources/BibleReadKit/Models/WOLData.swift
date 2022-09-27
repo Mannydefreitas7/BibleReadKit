@@ -8,23 +8,23 @@
 import Foundation
 
 public struct WOLChapter: Codable {
-    let title, content, articleClasses: String
+    public let title, content, articleClasses: String
 }
 
 // MARK: - WOLLanguages
-struct WOLLanguages: Codable {
-    let items: [Item]
+public struct WOLLanguages: Codable {
+     let items: [Item]
 }
 
-struct WOLVerse: Codable {
-    var uid: String?
-    var chapter: Int?
+public struct WOLVerse: Codable {
+    public var uid: String?
+    public var chapter: Int?
     var verseNumber: Int?
     var content: String?
 }
 
 // MARK: - Item
-struct Item: Codable {
+public struct Item: Codable {
     let languageTitle, englishName, asciiEnglishName, vernacularName: String
     let asciiVernacularName, mepsSymbol, mepsScript: String
     let isScriptVariant: Bool
@@ -37,17 +37,17 @@ struct Item: Codable {
     let libs: [LIB]
 }
 
-enum AppRoot: String, Codable {
+public enum AppRoot: String, Codable {
     case empty = "/"
 }
 
-enum Direction: String, Codable {
+public enum Direction: String, Codable {
     case ltr = "ltr"
     case rtl = "rtl"
 }
 
 // MARK: - LIB
-struct LIB: Codable {
+public struct LIB: Codable {
     let title, researchConfigurationID, symbol: String
     let hasRuby, isPrivileged: Bool
 }
