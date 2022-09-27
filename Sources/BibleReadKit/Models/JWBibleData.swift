@@ -8,50 +8,50 @@
 import Foundation
 
 public struct JWBibleData: Codable {
-    let status: Int?
-    let currentLocale: String?
-    let editionData: EditionData
+  public  let status: Int?
+  public  let currentLocale: String?
+  public  let editionData: EditionData
 }
 
 
 
 // MARK: - EditionData
 public struct EditionData: Codable {
-    let locale, bookCount, vernacularFullName: String?
-    let vernacularShortName: String?
-    let vernacularAbbreviation, url, titleFormat, pageCSSClassNames: String?
-    let articleCSSClassNames: String?
-    let books: [String: JWBook]?
+  public  let locale, bookCount, vernacularFullName: String?
+  public  let vernacularShortName: String?
+   public let vernacularAbbreviation, url, titleFormat, pageCSSClassNames: String?
+   public let articleCSSClassNames: String?
+  public  let books: [String: JWBook]?
 }
 
 // MARK: - Book
 public struct JWBook: Codable {
-    let chapterCount, standardName, standardAbbreviation, officialAbbreviation: String?
-    let standardSingularBookName, standardSingularAbbreviation, officialSingularAbbreviation, standardPluralBookName: String?
-    let standardPluralAbbreviation, officialPluralAbbreviation, bookDisplayTitle, chapterDisplayTitle: String?
-    let urlSegment, url: String?
-    let hasAudio, hasMultimedia, hasStudyNotes: Bool?
+  public  let chapterCount, standardName, standardAbbreviation, officialAbbreviation: String?
+  public  let standardSingularBookName, standardSingularAbbreviation, officialSingularAbbreviation, standardPluralBookName: String?
+  public  let standardPluralAbbreviation, officialPluralAbbreviation, bookDisplayTitle, chapterDisplayTitle: String?
+  public  let urlSegment, url: String?
+  public  let hasAudio, hasMultimedia, hasStudyNotes: Bool?
 }
 
 
 // MARK: - JWLibrary
 public struct JWLibrary: Codable {
-    let status: Int
-    let currentLocale: String
-    let langs: [String: LangValue]
+  public  let status: Int
+  public  let currentLocale: String
+  public  let langs: [String: LangValue]
 }
 
 // MARK: - LangValue
 public struct LangValue: Codable {
-    let lang: LangLang
-    let editions: [Edition]
+  public  let lang: LangLang
+  public  let editions: [Edition]
 }
 
 // MARK: - Edition
 public struct Edition: Codable {
-    let title: String
-    let symbol: Symbol
-    let contentAPI: String?
+ public   let title: String
+ public   let symbol: Symbol
+ public   let contentAPI: String?
 }
 
 public enum Symbol: String, Codable {
@@ -72,28 +72,28 @@ public enum Symbol: String, Codable {
 
 // MARK: - LangLang
 public struct LangLang: Codable {
-    let symbol, langcode, name, vernacularName: String
-    let script: String
+  public  let symbol, langcode, name, vernacularName: String
+  public  let script: String
 }
 
 // MARK: - JWRange
 public struct JWRange: Codable {
-    let status: Int
-    let currentLocale: String
-    let ranges: [String: Range]
+  public  let status: Int
+  public  let currentLocale: String
+  public  let ranges: [String: Range]
 }
 
 public struct Range: Codable {
-    let citation: String
-    let link: String
-    let validRange, citationVerseRange: String
-    let verses: [JWVerse]
-    let numTranslations: Int
+  public  let citation: String
+   public let link: String
+ public   let validRange, citationVerseRange: String
+ public   let verses: [JWVerse]
+  public  let numTranslations: Int
 }
 
 // MARK: - Verse
 public struct JWVerse: Codable {
-    let vsID: String
-    let bookNumber, chapterNumber, verseNumber: Int
-    let standardCitation, abbreviatedCitation, content: String
+  public  let vsID: String
+  public  let bookNumber, chapterNumber, verseNumber: Int
+  public  let standardCitation, abbreviatedCitation, content: String
 }

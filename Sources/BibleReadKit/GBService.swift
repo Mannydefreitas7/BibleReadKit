@@ -9,10 +9,10 @@ import Foundation
 
 public actor GBService {
     
-    static public var instance = GBService()
+    static public var shared = GBService()
     private let domain: String = "https://getbible.net"
     @available(macOS 12.0, *)
-    public func getBibleTranslations(for locale: String) async -> [BibleTranslation]? {
+    public func getBibleTranslations(for locale: String) async throws -> [BibleTranslation]? {
         do {
             let API_URL = "\(domain)/v2/translations.json"
             guard let url = URL(string: API_URL) else {
@@ -26,13 +26,12 @@ public actor GBService {
             return filtered.map { $0.value }
             
         } catch {
-            print(error.localizedDescription)
+            throw error
         }
-        return nil
     }
     
     @available(macOS 12.0, *)
-    public func getBibleBooks(for symbol: String) async -> [GetBibleBook]? {
+    public func getBibleBooks(for symbol: String) async throws -> [GetBibleBook]? {
         do {
             let API_URL = "\(domain)/v2/\(symbol)/books.json"
             guard let url = URL(string: API_URL) else {
@@ -44,13 +43,12 @@ public actor GBService {
             return decodedResponse.map { $0.value }
 
         } catch {
-            print(error.localizedDescription)
+            throw error
         }
-        return nil
     }
     
     @available(macOS 12.0, *)
-    public func getChapters(for symbol: String, from bookNumber: Int) async -> GetBibleBook? {
+    public func getChapters(for symbol: String, from bookNumber: Int) async throws -> GetBibleBook? {
         do {
             let API_URL = "\(domain)/v2/\(symbol)/\(bookNumber).json"
             guard let url = URL(string: API_URL) else {
@@ -61,9 +59,8 @@ public actor GBService {
             let decodedResponse = try JSONDecoder().decode(GetBibleBook.self, from: data)
             return decodedResponse
         } catch {
-            print(error.localizedDescription)
+            throw error
         }
-        return nil
     }
     
     

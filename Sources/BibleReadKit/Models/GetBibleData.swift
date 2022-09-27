@@ -9,11 +9,11 @@ import Foundation
 
 // MARK: - Akjv
 public struct BibleTranslation: Codable {
-    let translation, abbreviation, lang, language: String
-    let direction, encoding, distributionLcsh, distributionVersion: String
-    let distributionVersionDate, distributionAbbreviation, distributionAbout, distributionLicense: String
+   public let translation, abbreviation, lang, language: String
+   public let direction, encoding, distributionLcsh, distributionVersion: String
+   public let distributionVersionDate, distributionAbbreviation, distributionAbout, distributionLicense: String
 
-    enum CodingKeys: String, CodingKey {
+   public enum CodingKeys: String, CodingKey {
         case translation, abbreviation, lang, language, direction, encoding
         case distributionLcsh = "distribution_lcsh"
         case distributionVersion = "distribution_version"
@@ -26,25 +26,25 @@ public struct BibleTranslation: Codable {
 
 
 public struct GetBibleBook: Codable {
-    let translation, abbreviation, lang, language: String?
-    let direction, encoding: String?
-    let nr: Int?
-    let name: String?
-    let chapters: [GetBibleChapter]?
+   public let translation, abbreviation, lang, language: String?
+   public let direction, encoding: String?
+   public let nr: Int?
+   public let name: String?
+   public let chapters: [GetBibleChapter]?
 }
 
 
 // MARK: - GetBibleChapter
 public struct GetBibleChapter: Codable {
-    let translation, abbreviation, lang, language: String?
-    let direction, encoding: String?
-    let bookNr: Int?
-    let bookName: String?
-    let chapter: Int?
-    let name: String?
-    let verses: [GBVerse]?
+   public let translation, abbreviation, lang, language: String?
+   public let direction, encoding: String?
+   public let bookNr: Int?
+   public let bookName: String?
+   public let chapter: Int?
+   public let name: String?
+   public let verses: [GBVerse]?
 
-    enum CodingKeys: String, CodingKey {
+   public enum CodingKeys: String, CodingKey {
         case translation, abbreviation, lang, language, direction, encoding
         case bookNr = "book_nr"
         case bookName = "book_name"
