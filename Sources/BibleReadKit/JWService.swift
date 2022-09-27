@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class JWService {
+public actor JWService {
     
     static public let instance = JWService()
     private let API_URL: String = "https://www.jw.org/en/library/bible/json/"
@@ -59,14 +59,40 @@ public class JWService {
         return nil
     }
     
+    func bookVerseRange(book: Int, chapter: Int) -> String? {
+            if chapter <= 9 {
+                return "\(book)001001-\(book)00\(chapter)999"
+            }
+            if chapter > 9 {
+                return   "\(book)001001-\(book)0\(chapter)999"
+            }
+            if chapter > 99 {
+                return "\(book)001001-\(book)\(chapter)999"
+            }
+        return nil
+    }
+    
+    func verseRange(_ verseCount: Int) -> String? {
+        if verseCount <= 9 {
+            return "00\(verseCount)"
+        }
+        if verseCount > 9 {
+            return "0\(verseCount)"
+        }
+        if verseCount > 99 {
+            return "\(verseCount)"
+        }
+        return nil
+    }
+    
     @available(macOS 12.0, *)
-    public func getRangeVerses(for locale: String, with symbol: String, from range: String) async -> JWRange? {
+    public func getRangeVerses(for locale: String, with symbol: String, from bookNumber: Int, and chapterNumber: Int) async -> JWRange? {
         do {
             let bibleEditions: LangValue? = await getBibleEditions(for: locale)
             if let bibleEditions {
                 // filter by symbol & get url
                 let edition: Edition? = bibleEditions.editions.filter { $0.symbol.rawValue == symbol }.first
-                if let edition, let contentApi = edition.contentAPI {
+                if let edition, let contentApi = edition.contentAPI, let range = bookVerseRange(book: bookNumber, chapter: chapterNumber) {
             
                     guard let url = URL(string: "\(contentApi)/data/\(range)") else {
                         print("Invalid URL")
