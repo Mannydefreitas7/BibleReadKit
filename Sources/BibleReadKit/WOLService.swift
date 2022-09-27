@@ -31,7 +31,7 @@ public actor WOLService {
     }
     
     @available(macOS 12.0, *)
-    public func getBibleChapter(for locale: String, with bookNumber: Int, and chapterNumber: Int) async throws -> WOLChapter? {
+    public func getBibleChapter(locale: String, bookNumber: Int, chapterNumber: Int) async throws -> WOLChapter? {
         do {
             let languages = try await self.getLanguages()
             if let languages, let language = languages.items.filter({ $0.locale == locale }).first, let lib = language.libs.first {
