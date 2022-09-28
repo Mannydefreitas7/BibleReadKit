@@ -2,7 +2,7 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import SwiftUI
 
-public struct BibleReadKit {
+public actor BibleReadKit {
     
     public let jwService = JWService.shared
     public let wolService = WOLService.shared
@@ -60,8 +60,9 @@ public struct BibleReadKit {
         return Int64(chaptersCount)
     }
 
-    public func addChapter(bible: Bible, locale: String, book: Book, chapterNumber: Int) async throws -> (Chapter, Int?) {
-        var progressCount: Int?
+    public func addChapter(bible: Bible, locale: String, book: Book, chapterNumber: Int) async throws -> (chapter: Chapter, totalCount: Int?, bookCount: Int?) {
+        var totalProgressCount: Int?
+        var bookProgressCount: Int = 0
         var _chapter = Chapter()
         _chapter.book = book
         _chapter.uid = UUID().uuidString
@@ -78,7 +79,8 @@ public struct BibleReadKit {
                         return v
                     }
                 }
-                progressCount = 1
+                totalProgressCount = 1
+                bookProgressCount += 1
             }
 //
             if let gbChapter, let _verses = gbChapter.verses  {
@@ -94,10 +96,12 @@ public struct BibleReadKit {
                 _chapter.verseCount = verses.count
                 _chapter.verses = verses
                 
-                progressCount = 1
+                totalProgressCount = 1
+                bookProgressCount += 1
+
             }
         }
-        return (_chapter, progressCount)
+        return (_chapter, totalProgressCount, bookProgressCount)
     }
     
 }

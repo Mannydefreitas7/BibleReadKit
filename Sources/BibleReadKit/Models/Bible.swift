@@ -22,6 +22,7 @@ public struct Bible: Codable, Hashable {
     public var language: Language?
     public var year: String?
     public var books: [Book]?
+    public var isUploaded: Bool = false
     
     public func hash(into hasher: inout Hasher) {
         hasher.combine(uid)
