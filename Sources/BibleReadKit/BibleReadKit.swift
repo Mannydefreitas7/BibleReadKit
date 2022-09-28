@@ -13,18 +13,17 @@ public struct BibleReadKit {
     }
 
     
-    func getChapterData(bible: Bible, book: Book, chapterNumber: Int) async throws -> (WOLChapter?, GetBibleChapter?) {
-   
-            if let language = bible.language, let locale = language.locale {
-                if let bookNumber = book.bookNumber {
+    func getChapterData(bible: Bible, bookNumber: Int, chapterNumber: Int) async throws -> (WOLChapter?, GetBibleChapter?) {
+        
+            if let url = bible.contentApi, url.contains("jw") {
+                
+                if let language = bible.language, let locale = language.locale {
                     if let chapter: WOLChapter = try await wolService.getBibleChapter(locale: locale, bookNumber: bookNumber, chapterNumber: chapterNumber) {
                         return (chapter, nil)
                     }
                 }
-            }
-            
-            if let symbol = bible.symbol {
-                if let bookNumber = book.bookNumber {
+            } else {
+                if let symbol = bible.symbol {
                     if let chapter: GetBibleChapter = try await gbService.getChapter(symbol: symbol, bookNumber: bookNumber, chapterNumber: chapterNumber) {
                         return (nil, chapter)
                     }
@@ -34,25 +33,15 @@ public struct BibleReadKit {
     }
     
     func getChapterCount(bible:Bible?, bookNumber: Int) async throws -> Int? {
-            if let bible, let contentApi = bible.contentApi {
+        if let bible, let symbol = bible.symbol, let language = bible.language, let locale = language.locale, let contentApi = bible.contentApi {
                 if contentApi.contains("jw.org") {
-                    guard let url = URL(string: "\(contentApi)") else {
-                        print("Invalid URL")
-                        return nil
-                    }
-                    let (data, _) = try await URLSession.shared.data(from: url)
-                    let decodedResponse = try JSONDecoder().decode(JWBibleData.self, from: data)
-                    if let books = decodedResponse.editionData.books, let book = books["\(bookNumber)"], let chapterCount = book.chapterCount {
-                        return Int(chapterCount)
+                    if let data = try await jwService.getBible(locale: locale, symbol: symbol) {
+                        if let books = data.editionData.books, let book = books["\(bookNumber)"], let chapterCount = book.chapterCount {
+                            return Int(chapterCount)
+                        }
                     }
                 } else {
-                    guard let url = URL(string: "\(contentApi)\(bookNumber).json") else {
-                        print("Invalid URL")
-                        return nil
-                    }
-                    let (data, _) = try await URLSession.shared.data(from: url)
-                    let decodedResponse = try JSONDecoder().decode(GetBibleBook.self, from: data)
-                    if let _chapters = decodedResponse.chapters {
+                    if let data = try await gbService.getBookChapters(symbol: symbol, bookNumber: bookNumber), let _chapters = data.chapters {
                         return _chapters.count
                     }
                 }
@@ -62,24 +51,21 @@ public struct BibleReadKit {
     
     func getTotalChapters(in bible: Bible) async throws -> Int64 {
         var chaptersCount = 0
-        if let books = bible.books {
-           try await books.asyncForEach { book in
-                if let bookNumber = book.bookNumber, let count = try await self.getChapterCount(bible: bible, bookNumber: bookNumber) {
+        try await (1...66).asyncForEach { bookNumber in
+                if let count = try await self.getChapterCount(bible: bible, bookNumber: bookNumber) {
                     chaptersCount += count
                 }
             }
-        }
         return Int64(chaptersCount)
     }
     
-    public func downloadBible(firestore: Firestore, bible: Bible?) async throws -> (progress: Progress, isLoading: Bool, currentBookId: String?) {
+    public func downloadBible(firestore: Firestore, bible: Bible?, books: [Book]) async throws -> (progress: Progress, isLoading: Bool, currentBookId: String?) {
         var isLoading: Bool = false
         var currentBookId: String?
-        var progress: Progress = Progress()
+        let progress: Progress = Progress()
         
         
         if let bible,
-        let books = bible.books,
         let uid = bible.uid,
         let language = bible.language,
         let locale = language.locale {
@@ -115,36 +101,37 @@ public struct BibleReadKit {
                                 _chapter.uid = UUID().uuidString
                                 _chapter.chapterNumber = c
                                 
-                                let (wolChapter, gbChapter) = try await self.getChapterData(bible: bible, book: book, chapterNumber: c)
-                                
-                                if let _ = wolChapter {
-
-                                    if let verses = try await wolService.getBibleVerses(locale: locale, bookNumber: bookNumber, chapterNumber: c) {
-                                        _chapter.verseCount = verses.count
-                                        _chapter.verses = verses.map { _verse in
-                                            let v = Verse(uid: _verse.uid, chapter: _verse.chapter, verseNumber: _verse.verseNumber, content: _verse.content)
-                                            return v
-                                        }
-                                    }
-                                    progress.completedUnitCount += 1
-                                }
-//
-                                if let gbChapter, let _verses = gbChapter.verses  {
-
-                                    let verses: [Verse] = _verses.map { element in
-                                        var verse = Verse()
-                                        verse.chapter = element.chapter
-                                        verse.uid = UUID().uuidString
-                                        verse.content = element.text
-                                        verse.verseNumber = element.verse
-                                        return verse
-                                    }
-                                    _chapter.verseCount = verses.count
-                                    _chapter.verses = verses
+                                if let bookNumber = book.bookNumber {
+                                    let (wolChapter, gbChapter) = try await self.getChapterData(bible: bible, bookNumber: bookNumber, chapterNumber: c)
                                     
-                                    progress.completedUnitCount += 1
+                                    if let _ = wolChapter {
+
+                                        if let verses = try await wolService.getBibleVerses(locale: locale, bookNumber: bookNumber, chapterNumber: c) {
+                                            _chapter.verseCount = verses.count
+                                            _chapter.verses = verses.map { _verse in
+                                                let v = Verse(uid: _verse.uid, chapter: _verse.chapter, verseNumber: _verse.verseNumber, content: _verse.content)
+                                                return v
+                                            }
+                                        }
+                                        progress.completedUnitCount += 1
+                                    }
+    //
+                                    if let gbChapter, let _verses = gbChapter.verses  {
+
+                                        let verses: [Verse] = _verses.map { element in
+                                            var verse = Verse()
+                                            verse.chapter = element.chapter
+                                            verse.uid = UUID().uuidString
+                                            verse.content = element.text
+                                            verse.verseNumber = element.verse
+                                            return verse
+                                        }
+                                        _chapter.verseCount = verses.count
+                                        _chapter.verses = verses
+                                        
+                                        progress.completedUnitCount += 1
+                                    }
                                 }
-                                
                                 
                                 return _chapter
                                 

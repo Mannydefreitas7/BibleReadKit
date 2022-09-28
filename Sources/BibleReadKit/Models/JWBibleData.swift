@@ -78,22 +78,22 @@ public struct LangLang: Codable {
 
 // MARK: - JWRange
 public struct JWRange: Codable {
-  public  let status: Int
-  public  let currentLocale: String
-  public  let ranges: [String: Range]
+  public  let status: Int?
+  public  let currentLocale: String?
+  public  let ranges: [String: Range]?
 }
 
 public struct Range: Codable {
-  public  let citation: String
-   public let link: String
- public   let validRange, citationVerseRange: String
- public   let verses: [JWVerse]
-  public  let numTranslations: Int
+  public  let citation: String?
+   public let link: String?
+ public   let validRange, citationVerseRange: String?
+ public   let verses: [JWVerse]?
+  public  let numTranslations: Int?
 }
 
 // MARK: - Verse
 public struct JWVerse: Codable {
-  public  let vsID: String
-  public  let bookNumber, chapterNumber, verseNumber: Int
-  public  let standardCitation, abbreviatedCitation, content: String
+  public  let vsID: String?
+  public  let bookNumber, chapterNumber, verseNumber: Int?
+  public  let standardCitation, abbreviatedCitation, content: String?
 }

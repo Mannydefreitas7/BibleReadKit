@@ -88,26 +88,24 @@ public actor JWService {
     
     @available(macOS 12.0, *)
     public func getRangeVerses(locale: String, symbol: String, bookNumber: Int, chapterNumber: Int) async throws -> JWRange? {
-        do {
             let bibleEditions: LangValue? = try await getBibleEditions(locale: locale)
             if let bibleEditions {
                 // filter by symbol & get url
                 let edition: Edition? = bibleEditions.editions.filter { $0.symbol.rawValue == symbol }.first
                 if let edition, let contentApi = edition.contentAPI, let range = bookVerseRange(book: bookNumber, chapter: chapterNumber) {
             
-                    guard let url = URL(string: "\(contentApi)/data/\(range)") else {
+                        
+                    guard let url = URL(string: "\(contentApi)data/\(range)") else {
                         print("Invalid URL")
                         return nil
                     }
+                   
                     // Get the data from
                     let (data, _) = try await URLSession.shared.data(from: url)
                     let decodedResponse = try JSONDecoder().decode(JWRange.self, from: data)
                     return decodedResponse
                 }
             }
-        } catch {
-            throw error
-        }
         return nil
     }
     
