@@ -15,45 +15,34 @@ public actor JWService {
     // Get bible translations
     @available(macOS 12.0, *)
     public func getBibleEditions(locale: String) async throws -> LangValue? {
-        do {
-            guard let url = URL(string: API_URL) else {
-                print("Invalid URL")
-                return nil
-            }
-      
-                let (data, _) = try await URLSession.shared.data(from: url)
-                let decodedResponse = try JSONDecoder().decode(JWLibrary.self, from: data)
-                return decodedResponse.langs[locale]
-            
-        } catch {
-            throw error
+        guard let url = URL(string: API_URL) else {
+            print("Invalid URL")
+            return nil
         }
+        let (data, _) = try await URLSession.shared.data(from: url)
+        let decodedResponse = try JSONDecoder().decode(JWLibrary.self, from: data)
+        return decodedResponse.langs[locale]
+
     }
     // get bible books data
     @available(macOS 12.0, *)
     public func getBible(locale: String, symbol: String) async throws -> JWBibleData? {
-        do {
-            
-                // fetch bible editions
-                let bibleEditions: LangValue? = try await getBibleEditions(locale: locale)
-                if let bibleEditions {
-                    // filter by symbol & get url
-                    let edition: Edition? = bibleEditions.editions.filter { $0.symbol.rawValue == symbol }.first
-                    if let edition, let contentApi = edition.contentAPI {
-                
-                        guard let url = URL(string: contentApi) else {
-                            print("Invalid URL")
-                            return nil
-                        }
-                        // Get the data from
-                        let (data, _) = try await URLSession.shared.data(from: url)
-                        let decodedResponse = try JSONDecoder().decode(JWBibleData.self, from: data)
-                        return decodedResponse
-                    }
+        // fetch bible editions
+        let bibleEditions: LangValue? = try await getBibleEditions(locale: locale)
+        if let bibleEditions {
+            // filter by symbol & get url
+            let edition: Edition? = bibleEditions.editions.filter { $0.symbol.rawValue == symbol }.first
+            if let edition, let contentApi = edition.contentAPI {
+        
+                guard let url = URL(string: contentApi) else {
+                    print("Invalid URL")
+                    return nil
                 }
-            
-        } catch {
-            throw error
+                // Get the data from
+                let (data, _) = try await URLSession.shared.data(from: url)
+                let decodedResponse = try JSONDecoder().decode(JWBibleData.self, from: data)
+                return decodedResponse
+            }
         }
         return nil
     }
@@ -93,13 +82,10 @@ public actor JWService {
                 // filter by symbol & get url
                 let edition: Edition? = bibleEditions.editions.filter { $0.symbol.rawValue == symbol }.first
                 if let edition, let contentApi = edition.contentAPI, let range = bookVerseRange(book: bookNumber, chapter: chapterNumber) {
-            
-                        
                     guard let url = URL(string: "\(contentApi)data/\(range)") else {
                         print("Invalid URL")
                         return nil
                     }
-                   
                     // Get the data from
                     let (data, _) = try await URLSession.shared.data(from: url)
                     let decodedResponse = try JSONDecoder().decode(JWRange.self, from: data)
