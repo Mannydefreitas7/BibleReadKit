@@ -33,9 +33,9 @@ public actor WOLService {
     public func getBibleChapter(locale: String, bookNumber: Int, chapterNumber: Int) async throws -> WOLChapter? {
         do {
             let languages = try await self.getLanguages()
-            if let languages, let language = languages.items.filter({ $0.locale == locale }).first, let lib = language.libs.first {
+            if let languages, let language = languages.items.filter({ $0.locale == locale }).first, let libs = language.libs, let lib = libs.first {
                 
-                let _url = "https://wol.jw.org/wol/b/\(lib.researchConfigurationID)/\(lib.symbol)/nwt/\(bookNumber)/\(chapterNumber)"
+                let _url = "https://wol.jw.org/wol/b/\(lib.researchConfigurationID ?? "")/\(lib.symbol ?? "")/nwt/\(bookNumber)/\(chapterNumber)"
                 
                 guard let url = URL(string: _url) else {
                     print("Invalid URL")
