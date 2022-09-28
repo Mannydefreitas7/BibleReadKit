@@ -54,12 +54,12 @@ public struct Writer: Codable {
 }
 
 public struct Chapter: Codable {
-    public var uid: String?
-    public var chapterNumber: Int?
-    public var verseCount: Int?
-    public var verses: [Verse]?
-    public var book: Book?
-    public var verseRange: String?
+    public let uid: String?
+    public let chapterNumber: Int?
+    public let verseCount: Int?
+    public let verses: [Verse]?
+    public let book: Book?
+    public let verseRange: String?
 }
 
 public struct Verse: Codable {

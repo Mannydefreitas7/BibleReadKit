@@ -60,5 +60,6 @@ public struct BibleReadKit {
         return Int64(chaptersCount)
     }
 
+    public func 
     
 }
