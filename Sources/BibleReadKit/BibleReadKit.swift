@@ -7,6 +7,10 @@ public struct BibleReadKit {
     public let wolService = WOLService.shared
     public let gbService = GBService.shared
     private let firEncoder = Firestore.Encoder()
+    
+    public init() {
+        
+    }
 
     
     func getChapterData(bible: Bible, book: Book, chapterNumber: Int) async throws -> (WOLChapter?, GetBibleChapter?) {
