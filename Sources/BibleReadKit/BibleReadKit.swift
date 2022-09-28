@@ -72,7 +72,7 @@ public struct BibleReadKit {
         return Int64(chaptersCount)
     }
     
-    func downloadBible(firestore: Firestore, bible: Bible?) async throws -> (progress: Progress, isLoading: Bool, currentBookId: String?) {
+    public func downloadBible(firestore: Firestore, bible: Bible?) async throws -> (progress: Progress, isLoading: Bool, currentBookId: String?) {
         var isLoading: Bool = false
         var currentBookId: String?
         var progress: Progress = Progress()
