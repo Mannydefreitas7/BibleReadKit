@@ -60,6 +60,44 @@ public struct BibleReadKit {
         return Int64(chaptersCount)
     }
 
-    public func 
+    public func addChapter(bible: Bible, locale: String, book: Book, chapterNumber: Int) async throws -> (Chapter, Int?) {
+        var progressCount: Int?
+        var _chapter = Chapter()
+        _chapter.book = book
+        _chapter.uid = UUID().uuidString
+        _chapter.chapterNumber = chapterNumber
+        if let bookNumber = book.bookNumber {
+            let (wolChapter, gbChapter) = try await self.getChapterData(bible: bible, bookNumber: bookNumber, chapterNumber: chapterNumber)
+            
+            if let _ = wolChapter {
+
+                if let verses = try await wolService.getBibleVerses(locale: locale, bookNumber: bookNumber, chapterNumber: chapterNumber) {
+                    _chapter.verseCount = verses.count
+                    _chapter.verses = verses.map { _verse in
+                        let v = Verse(uid: _verse.uid, chapter: _verse.chapter, verseNumber: _verse.verseNumber, content: _verse.content)
+                        return v
+                    }
+                }
+                progressCount = 1
+            }
+//
+            if let gbChapter, let _verses = gbChapter.verses  {
+
+                let verses: [Verse] = _verses.map { element in
+                    var verse = Verse()
+                    verse.chapter = element.chapter
+                    verse.uid = UUID().uuidString
+                    verse.content = element.text
+                    verse.verseNumber = element.verse
+                    return verse
+                }
+                _chapter.verseCount = verses.count
+                _chapter.verses = verses
+                
+                progressCount = 1
+            }
+        }
+        return (_chapter, progressCount)
+    }
     
 }
