@@ -7,70 +7,70 @@
 
 import Foundation
 
-struct DBLanguage {
-    var api: String?
-    var audioCode: String?
-    var bibleTranslation: String?
-    var bibles: [DBBible]
-    var contentApi: String?
-    var books: [DBBook]?
-    var index: Int?
-    var isRTL: Bool?
-    var locale: String?
-    var name: String?
-    var vernacularName: String?
+public struct DBLanguage {
+    public var api: String?
+    public var audioCode: String?
+    public var bibleTranslation: String?
+    public var bibles: [DBBible]
+    public var contentApi: String?
+    public var books: [DBBook]?
+    public var index: Int?
+    public var isRTL: Bool?
+    public var locale: String?
+    public var name: String?
+    public var vernacularName: String?
 }
-struct Languages: Codable {
-    var language: [String: Language]?
+public struct Languages: Codable {
+    public var language: [String: Language]?
 }
-struct Language: Codable {
-    var name: String?
-    var uid: String?
-    var index: Int?
-    var isRTL: Bool?
-    var locale: String?
-    var wolApi: String?
-    var vernacularName: String?
-    var audioCode: String?
-    var api: String?
-    var bibles: [String: Bible]?
+public struct Language: Codable {
+    public var name: String?
+    public var uid: String?
+    public var index: Int?
+    public var isRTL: Bool?
+    public var locale: String?
+    public var wolApi: String?
+    public var vernacularName: String?
+    public var audioCode: String?
+    public var api: String?
+    public var bibles: [String: Bible]?
 }
 
-enum LanguageSource {
+public enum LanguageSource {
     case firestore
     case wol
 }
 
 
-struct WOLLanguage: Codable {
-    let items: [Item]?
+public struct WOLLanguage: Codable {
+    public let  items: [Item]?
 }
 
 // MARK: - Item
-struct Item: Codable {
-    let languageTitle, englishName, asciiEnglishName, vernacularName: String?
-    let asciiVernacularName, mepsSymbol, mepsScript: String?
-    let isScriptVariant: Bool?
-    let direction: Direction?
-    let isSignLanguage: Bool?
-    let locale: String?
-    let ietfLocales: [String]?
-    let appRoot: AppRoot?
-    let libLangClasses, libLangAttributes: String?
-    let libs: [LIB]?
+public struct Item: Codable {
+    public let  languageTitle, englishName, asciiEnglishName, vernacularName: String?
+    public let  asciiVernacularName, mepsSymbol, mepsScript: String?
+    public let  isScriptVariant: Bool?
+    public let  direction: Direction?
+    public let  isSignLanguage: Bool?
+    public let  locale: String?
+    public let  ietfLocales: [String]?
+    public let  appRoot: AppRoot?
+    public let  libLangClasses, libLangAttributes: String?
+    public let  libs: [LIB]?
 }
 
-enum AppRoot: String, Codable {
+public enum AppRoot: String, Codable {
     case empty = "/"
 }
 
-enum Direction: String, Codable {
+public enum Direction: String, Codable {
     case ltr = "ltr"
     case rtl = "rtl"
 }
 
 // MARK: - LIB
-struct LIB: Codable {
-    let title, researchConfigurationID, symbol: String?
-    let hasRuby, isPrivileged: Bool?
+public struct LIB: Codable {
+    public let  title, researchConfigurationID, symbol: String?
+    public let  hasRuby, isPrivileged: Bool?
 }

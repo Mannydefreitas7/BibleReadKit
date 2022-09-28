@@ -8,85 +8,85 @@
 import Foundation
 
 
-struct Bible: Codable, Hashable {
-    static func == (lhs: Bible, rhs: Bible) -> Bool {
+public struct Bible: Codable, Hashable {
+    public static func == (lhs: Bible, rhs: Bible) -> Bool {
         return lhs.uid == rhs.uid
     }
     
-    var uid: String?
-    var name: String?
-    var contentApi: String?
-    var index: Int?
-    var wolApi: String?
-    var symbol: String?
-    var language: Language?
-    var year: String?
-    var books: [Book]?
+    public var uid: String?
+    public var name: String?
+    public var contentApi: String?
+    public var index: Int?
+    public var wolApi: String?
+    public var symbol: String?
+    public var language: Language?
+    public var year: String?
+    public var books: [Book]?
     
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(uid)
     }
 }
 
-struct Book: Codable {
-    var uid: String?
-    var bookNumber: Int?
-    var name: String?
-    var shortName: String?
-    var chapterCount: Int?
-    var writer: Writer?
-    var type: BookType?
-    var language: Language?
-    var range: String?
-    var isDownloaded: Bool?
-    var bible: Bible?
-    var title: String?
-    var chapters: [Chapter]?
+public struct Book: Codable {
+    public var uid: String?
+    public var bookNumber: Int?
+    public var name: String?
+    public var shortName: String?
+    public var chapterCount: Int?
+    public var writer: Writer?
+    public var type: BookType?
+    public var language: Language?
+    public var range: String?
+    public var isDownloaded: Bool?
+    public var bible: Bible?
+    public var title: String?
+    public var chapters: [Chapter]?
 }
 
 
-struct Writer: Codable {
-    var uid: String?
-    var name: String?
-    var lifeSpan: String?
-    var date: Date;
-    var image: Data?;
+public struct Writer: Codable {
+    public var uid: String?
+    public var name: String?
+    public var lifeSpan: String?
+    public var date: Date;
+    public var image: Data?;
 }
 
-struct Chapter: Codable {
-    var uid: String?
-    var chapterNumber: Int?
-    var verseCount: Int?
-    var verses: [Verse]?
-    var book: Book?
-    var verseRange: String?
+public struct Chapter: Codable {
+    public var uid: String?
+    public var chapterNumber: Int?
+    public var verseCount: Int?
+    public var verses: [Verse]?
+    public var book: Book?
+    public var verseRange: String?
 }
 
-struct Verse: Codable {
-    var uid: String?
-    var chapter: Int?
-    var verseNumber: Int?
-    var content: String?
+public struct Verse: Codable {
+    public var uid: String?
+    public var chapter: Int?
+    public var verseNumber: Int?
+    public var content: String?
 }
 
-enum BookType: String, Codable {
+public enum BookType: String, Codable {
     case greek = "greek"
     case hebrew = "hebrew"
 }
 
 
-struct DBBible {
-    var bibleTranslation: String?
-    var contentApi: String?
-    var id: String?
-    var index: String?
-    var symbol: String?
+public struct DBBible {
+    public var bibleTranslation: String?
+    public var contentApi: String?
+    public var id: String?
+    public var index: String?
+    public var symbol: String?
 }
 
-struct DBBook {
-    var bookID: Int?
-    var chapterCount: String?
-    var hasAudio: Bool
-    var longName: String?
-    var shortName: String?
+public struct DBBook {
+    public var bookID: Int?
+    public var chapterCount: String?
+    public var hasAudio: Bool
+    public var longName: String?
+    public var shortName: String?
 }
