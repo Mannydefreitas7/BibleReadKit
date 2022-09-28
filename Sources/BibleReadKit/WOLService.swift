@@ -66,7 +66,6 @@ public actor WOLService {
     
     @available(macOS 12.0, *)
     public func getBibleVerses(locale: String, bookNumber: Int, chapterNumber: Int) async throws -> [WOLVerse]? {
-        do {
             let wolChapter: WOLChapter? = try await self.getBibleChapter(locale: locale, bookNumber: bookNumber, chapterNumber: chapterNumber)
             if let wolChapter {
                 let html = wolChapter.content
@@ -76,7 +75,6 @@ public actor WOLService {
                         var verse = WOLVerse()
                         verse.chapter = chapterNumber
                         verse.uid = UUID().uuidString
-                        do {
                             let verseNumberEl = try element.select(".vp").first()
                             if let verseNumberEl {
                                 let number = try verseNumberEl.text(trimAndNormaliseWhitespace: true)
@@ -86,17 +84,12 @@ public actor WOLService {
                             let text = try element.text(trimAndNormaliseWhitespace: true)
                             verse.content = text
                                 
-                        } catch {
-                            throw error
-                        }
+                       
                         return verse
                     }
                     return verses
                 }
             }
-        } catch {
-            throw error
-        }
         return nil
     }
     

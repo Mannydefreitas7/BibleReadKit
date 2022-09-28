@@ -104,4 +104,6 @@ public actor BibleReadKit {
         return (_chapter, totalProgressCount, bookProgressCount)
     }
     
+    
+    
 }
