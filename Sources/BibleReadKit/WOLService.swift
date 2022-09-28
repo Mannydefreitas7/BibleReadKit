@@ -43,7 +43,6 @@ public actor WOLService {
                 }
                 
                 let (data, _) = try await URLSession.shared.data(from: url)
-                print(data)
                 let decodedResponse = try JSONDecoder().decode(WOLChapter.self, from: data)
                 return decodedResponse
                 
