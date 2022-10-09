@@ -6,71 +6,51 @@
 //
 
 import Foundation
+import FirebaseFirestore
+import FirebaseFirestoreSwift
+import RealmSwift
 
-public struct DBLanguage {
-    public var api: String?
+// Language
+public struct BRLanguage: Codable, Hashable {
+    @DocumentID public var id: String?
+    public var api : String?
     public var audioCode: String?
-    public var bibleTranslation: String?
-    public var bibles: [DBBible]
-    public var contentApi: String?
-    public var books: [DBBook]?
-    public var index: Int?
     public var isRTL: Bool?
     public var locale: String?
-    public var name: String?
-    public var vernacularName: String?
-}
-public struct Languages: Codable {
-    public var language: [String: Language]?
-}
-public struct Language: Codable {
     public var name: String?
     public var uid: String?
-    public var index: Int?
-    public var isRTL: Bool?
-    public var locale: String?
-    public var wolApi: String?
     public var vernacularName: String?
-    public var audioCode: String?
-    public var api: String?
-    public var bibles: [String: Bible]?
+    public var wolApi: String?
+    @ServerTimestamp public var createdAt: Timestamp?
 }
 
-public enum LanguageSource {
-    case firestore
-    case wol
+public final class LocalLanguage: Object, ObjectKeyIdentifiable {
+    @Persisted(primaryKey: true) public var id: ObjectId
+    @Persisted public var api: String = ""
+    @Persisted public var audioCode: String = ""
+    @Persisted public var isRTL: Bool = false
+    @Persisted public var locale: String = ""
+    @Persisted public var name: String = ""
+    @Persisted public var uid: String = ""
+    @Persisted public var vernacularName: String = ""
 }
 
-
-public struct WOLLanguage: Codable {
-    public let  items: [Item]?
-}
-
-// MARK: - Item
-public struct Item: Codable {
-    public let  languageTitle, englishName, asciiEnglishName, vernacularName: String?
-    public let  asciiVernacularName, mepsSymbol, mepsScript: String?
-    public let  isScriptVariant: Bool?
-    public let  direction: Direction?
-    public let  isSignLanguage: Bool?
-    public let  locale: String?
-    public let  ietfLocales: [String]?
-    public let  appRoot: AppRoot?
-    public let  libLangClasses, libLangAttributes: String?
-    public let  libs: [LIB]?
-}
-
-public enum AppRoot: String, Codable {
-    case empty = "/"
-}
-
-public enum Direction: String, Codable {
-    case ltr = "ltr"
-    case rtl = "rtl"
-}
-
-// MARK: - LIB
-public struct LIB: Codable {
-    public let  title, researchConfigurationID, symbol: String?
-    public let  hasRuby, isPrivileged: Bool?
+public extension BRLanguage {
+    
+    func mockLanguage() -> BRLanguage {
+        
+        let language = BRLanguage(id: UUID().uuidString, api: "", audioCode: "E", isRTL: false, locale: "en", name: "English", uid: UUID().uuidString, vernacularName: "English", wolApi: "", createdAt: .init(date: .now))
+        return language
+    }
+    
+    func mockLanguages() -> [BRLanguage] {
+        
+        let ids = [UUID().uuidString, UUID().uuidString, UUID().uuidString, UUID().uuidString, UUID().uuidString, UUID().uuidString]
+        let languages : [BRLanguage] = ids.map { id in
+            return  BRLanguage(id: id, api: "", audioCode: "E", isRTL: false, locale: "en", name: "Language", uid: id, vernacularName: id, wolApi: "", createdAt: .init(date: .now))
+        }
+        return languages
+    }
+    
+    
 }

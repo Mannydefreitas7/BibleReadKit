@@ -8,8 +8,8 @@ final class BibleReadKitTests: XCTestCase {
     }
     
     func testGetChapterDataForJW() async throws {
-        var bible = Bible()
-        var language = Language()
+        var bible = BRBible()
+        var language = BRLanguage()
         language.locale = "en"
         bible.language = language
         bible.contentApi = "www.jw.org"
@@ -23,7 +23,7 @@ final class BibleReadKitTests: XCTestCase {
     }
     
     func testGetChapterDataForGB() async throws {
-        var bible = Bible()
+        var bible = BRBible()
         bible.symbol = "akjv"
         bible.language?.locale = "en"
         bible.contentApi = "www.getBible.org"
@@ -37,8 +37,8 @@ final class BibleReadKitTests: XCTestCase {
     }
     
     func testGetChapterCountForJW() async throws {
-        var bible = Bible()
-        var language = Language()
+        var bible = BRBible()
+        var language = BRLanguage()
         language.locale = "en"
         bible.language = language
         bible.symbol = "nwt"
@@ -50,10 +50,10 @@ final class BibleReadKitTests: XCTestCase {
         }
     }
     func testGetChapterCountForGB() async throws {
-        var bible = Bible()
+        var bible = BRBible()
         bible.symbol = "akjv"
         bible.contentApi = "www.getBible.org"
-        var language = Language()
+        var language = BRLanguage()
         language.locale = "en"
         bible.language = language
         let count = try await kit.getChapterCount(bible: bible, bookNumber: 2)
@@ -64,13 +64,14 @@ final class BibleReadKitTests: XCTestCase {
     }
     
     func testGetTotalChapters() async throws {
-        var bible = Bible()
+        var bible = BRBible()
         bible.symbol = "akjv"
         bible.contentApi = "www.getBible.org"
-        var language = Language()
+        var language = BRLanguage()
         language.locale = "en"
         bible.language = language
         let count = try await kit.getTotalChapters(in: bible)
         XCTAssertGreaterThan(count, 1000)
     }
+
 }
