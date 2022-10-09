@@ -3,9 +3,7 @@ import XCTest
 
 final class BibleReadKitTests: XCTestCase {
     private let kit = BibleReadKit()
-    func testDownloadBible() async throws {
-        
-    }
+
     
     func testGetChapterDataForJW() async throws {
         var bible = BRBible()
