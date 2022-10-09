@@ -25,6 +25,7 @@ public struct BRBook: Identifiable, Codable, Hashable {
     public var shortName: String?
     public var title: String?
     public var writer: BRWriter?
+    public var isDownloaded: Bool = false
     public var type: BRBookType.RawValue?
     public var bible: BRBible?
     public var language: BRLanguage?
