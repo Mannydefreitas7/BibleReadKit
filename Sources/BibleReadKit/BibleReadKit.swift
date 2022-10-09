@@ -10,6 +10,11 @@ public actor BibleReadKit {
     public let pubMediaService = PMService.shared
     private let firEncoder = Firestore.Encoder()
     
+    public enum BibleSourceType {
+        case secular
+        case jw
+    }
+    
     public init() {}
 
     
@@ -118,5 +123,42 @@ public actor BibleReadKit {
         return (_chapter, totalProgressCount, bookProgressCount)
     }
     
-
+    public func getBiblesFromLocale(language: BRLanguage) async throws -> [BRBible] {
+        var bibles = [BRBible]()
+        
+        if let locale = language.locale, let jwBibles = try await jwService.getBibleEditions(locale: locale) {
+           try await jwBibles.editions.asyncForEach { edition in
+               let bibleData = try await jwService.getBible(locale: locale, symbol: edition.symbol.rawValue)
+               if let bibleData {
+                   var _bible = BRBible()
+                   _bible.symbol = edition.symbol.rawValue
+                   _bible.name = bibleData.editionData.vernacularFullName
+                   _bible.language = language
+                   _bible.uid = UUID().uuidString
+                   _bible.isUploaded = false
+                   _bible.contentApi = bibleData.editionData.url
+                   _bible.wolApi = language.wolApi
+                   _bible.createdAt = .none
+                   _bible.version = 1
+                   bibles.append(_bible)
+               }
+            }
+        }
+        
+        if let locale = language.locale, let gbBibles = try await gbService.getBibleTranslations(locale: locale) {
+            gbBibles.forEach { translation in
+                var _bible = BRBible()
+                _bible.symbol = translation.abbreviation
+                _bible.name = translation.translation
+                _bible.language = language
+                _bible.uid = UUID().uuidString
+                _bible.isUploaded = false
+                _bible.contentApi = translation.url
+                _bible.createdAt = .none
+                _bible.version = 1
+                bibles.append(_bible)
+            }
+        }
+        return bibles
+    }
 }

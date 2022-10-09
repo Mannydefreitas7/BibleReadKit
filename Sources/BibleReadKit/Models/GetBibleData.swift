@@ -9,12 +9,12 @@ import Foundation
 
 // MARK: - Akjv
 public struct BibleTranslation: Codable {
-   public let translation, abbreviation, lang, language: String
+   public let translation, abbreviation, lang, language, url: String
    public let direction, encoding, distributionLcsh, distributionVersion: String
    public let distributionVersionDate, distributionAbbreviation, distributionAbout, distributionLicense: String
 
    public enum CodingKeys: String, CodingKey {
-        case translation, abbreviation, lang, language, direction, encoding
+        case translation, abbreviation, lang, language, direction, encoding, url
         case distributionLcsh = "distribution_lcsh"
         case distributionVersion = "distribution_version"
         case distributionVersionDate = "distribution_version_date"

@@ -112,4 +112,11 @@ final class BibleReadKitTests: XCTestCase {
             }
         }
     }
+    
+    func testGetBiblesFromLanguage() async throws {
+        let language = BRLanguage().mockLanguage()
+        let bibles = try await kit.getBiblesFromLocale(language: language)
+        debugPrint(bibles)
+        XCTAssertGreaterThan(bibles.count, 0)
+    }
 }
