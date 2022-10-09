@@ -16,6 +16,8 @@ public struct BRVerse: Codable, Hashable {
     public var chapter: Int?
     public var verseNumber: Int?
     public var content: String?
+    public var audioVerseStart: TimeInterval?
+    public var audioVerseEnd: TimeInterval?
 }
 
 
@@ -25,5 +27,7 @@ public final class LocalVerse: Object, ObjectKeyIdentifiable {
     @Persisted public var uid: String = ""
     @Persisted public var content: String = ""
     @Persisted public var verseNumber: Int = 0
+    @Persisted public var audioVerseStart: TimeInterval?
+    @Persisted public var audioVerseEnd: TimeInterval?
     @Persisted(originProperty: "verses") var chapter: LinkingObjects<LocalChapter>
 }

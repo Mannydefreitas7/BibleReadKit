@@ -9,6 +9,7 @@ import Foundation
 
 public struct WOLChapter: Codable {
     public let title, content, articleClasses: String
+    public let mp3: PMFile?
 }
 
 // MARK: - WOLLanguages

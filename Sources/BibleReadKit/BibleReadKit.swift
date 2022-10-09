@@ -7,6 +7,7 @@ public actor BibleReadKit {
     public let jwService = JWService.shared
     public let wolService = WOLService.shared
     public let gbService = GBService.shared
+    public let pubMediaService = PMService.shared
     private let firEncoder = Firestore.Encoder()
     
     public init() {}
@@ -65,10 +66,24 @@ public actor BibleReadKit {
         _chapter.book = book
         _chapter.uid = UUID().uuidString
         _chapter.chapterNumber = chapterNumber
+        
+        
         if let bookNumber = book.bookNumber {
-            let (wolChapter, gbChapter) = try await self.getChapterData(bible: bible, bookNumber: bookNumber, chapterNumber: chapterNumber)
             
+            let (wolChapter, gbChapter) = try await self.getChapterData(bible: bible, bookNumber: bookNumber, chapterNumber: chapterNumber)
+    
             if let _ = wolChapter {
+                
+                if let symbol = bible.symbol, let language = bible.language, let audioCode = language.audioCode, let file = try await pubMediaService.getAudioFileUrl(bookNumber: bookNumber, chapterNumber: chapterNumber, symbol: symbol, audioCode: audioCode) {
+
+                    var mep3File = BRMP3File()
+                    mep3File.title = file.title
+                    mep3File.id = UUID().uuidString
+                    mep3File.duration = file.duration
+                    mep3File.url = file.file?.url
+                    mep3File.markers = file.markers
+                    _chapter.mp3File = mep3File
+                }
 
                 if let verses = try await wolService.getBibleVerses(locale: locale, bookNumber: bookNumber, chapterNumber: chapterNumber) {
                     _chapter.verseCount = verses.count
@@ -79,6 +94,7 @@ public actor BibleReadKit {
                 }
                 totalProgressCount = 1
                 bookProgressCount += 1
+                
             }
 //
             if let gbChapter, let _verses = gbChapter.verses  {
@@ -101,5 +117,6 @@ public actor BibleReadKit {
         }
         return (_chapter, totalProgressCount, bookProgressCount)
     }
-  
+    
+
 }

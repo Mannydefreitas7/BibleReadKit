@@ -71,5 +71,45 @@ final class BibleReadKitTests: XCTestCase {
         let count = try await kit.getTotalChapters(in: bible)
         XCTAssertGreaterThan(count, 1000)
     }
-
+    
+    func testGetAudioFileUrls() async throws {
+        let files = try await kit.pubMediaService.getAudioFileUrls()
+        XCTAssertNotNil(files)
+        if let files {
+            XCTAssertGreaterThan(files.count, 48)
+            XCTAssertNotNil(files.first)
+            if let file = files.first, let chapterName = file.title {
+                XCTAssertEqual(chapterName, "Chapter 1")
+            }
+        }
+    }
+    
+    func testGetAudioFileUrl() async throws {
+        let file = try await kit.pubMediaService.getAudioFileUrl(bookNumber: 1, chapterNumber: 1, symbol: "nwt", audioCode: "E")
+        XCTAssertNotNil(file)
+        if let file {
+            if let chapterName = file.title {
+                XCTAssertEqual(chapterName, "Chapter 1")
+            }
+        }
+    }
+    
+    func testAddChapter() async throws {
+        let bible = BRBible().mockBRBible()
+        let book = BRBook().mockBRBook()
+        let (chapter, totalCount, bookCount) = try await kit.addChapter(bible: bible, locale: "en", book: book, chapterNumber: 1)
+        XCTAssertNotNil(totalCount)
+        XCTAssertNotNil(bookCount)
+        XCTAssertNotNil(chapter.verses)
+        if let verses = chapter.verses {
+            XCTAssertGreaterThan(verses.count, 30)
+        }
+        XCTAssertNotNil(chapter.mp3File)
+        if let file = chapter.mp3File {
+            XCTAssertNotNil(file.title)
+            if let chapterName = file.title {
+                XCTAssertEqual(chapterName, "Chapter 1")
+            }
+        }
+    }
 }

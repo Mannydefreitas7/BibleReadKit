@@ -23,6 +23,7 @@ public struct BRChapter: Identifiable, Codable, Hashable {
     public var verseCount: Int?
     public var verseRange: String?
     public var verses: [BRVerse]?
+    public var mp3File: BRMP3File?
 }
 
 public final class LocalChapter: Object, ObjectKeyIdentifiable {

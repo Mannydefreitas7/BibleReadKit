@@ -56,3 +56,18 @@ public enum LocalBookType: String, PersistableEnum {
     case hebrew
     case greek
 }
+
+public extension BRBook {
+    func mockBRBook() -> BRBook {
+        var book = BRBook()
+        book.language = BRLanguage().mockLanguage()
+        book.bible =  BRBible().mockBRBible()
+        book.id = UUID().uuidString
+        book.title = "Genesis"
+        book.bookNumber = 1
+        book.type = BRBookType.hebrew.rawValue
+        book.name = "Genesis"
+        book.shortName = "Ge"
+        return book
+    }
+}

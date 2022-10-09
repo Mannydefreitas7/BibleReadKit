@@ -22,11 +22,12 @@ public struct BRBible: Codable, Hashable {
     public var index: Int?
     public var wolApi: String?
     public var symbol: String?
-    public var version: String?
+    public var version: Int?
     public var language: BRLanguage?
     public var year: String?
     public var books: [BRBook]?
     public var isUploaded: Bool?
+    public var bibleAudioApiSymbol: String?
     @ServerTimestamp public var createdAt: Timestamp?
     
     public func hash(into hasher: inout Hasher) {
@@ -40,19 +41,35 @@ public final class LocalBible: Object, ObjectKeyIdentifiable {
     @Persisted public var contentApi: String = ""
     @Persisted public var index: Int = 0
     @Persisted public var verseNumber: String = ""
+    @Persisted public var version: Int?
     @Persisted public var name: String = ""
     @Persisted public var symbol: String = ""
     @Persisted public var uid: String = ""
     @Persisted public var wolApi: String = ""
     @Persisted public var books = List<LocalBook>()
     @Persisted public var language: LocalLanguage?
+    @Persisted public var languageCode: String?
+    @Persisted public var bibleAudioApiSymbol: String?
     
+}
+
+public extension BRBible {
+    func mockBRBible() -> BRBible {
+        var bible = BRBible()
+        bible.uid = UUID().uuidString
+        bible.symbol = "nwt"
+        bible.name = "Bible"
+        bible.contentApi = "jw.org"
+        bible.index = 1
+        bible.language = BRLanguage().mockLanguage()
+        return bible
+    }
 }
 
 
 public extension LocalBible {
     
-    func mockLocalBible() -> LocalBible {
+   static func mockLocalBible() -> LocalBible {
         let localBible = LocalBible()
         localBible.uid = UUID().uuidString
         localBible.symbol = "nwt"
@@ -62,7 +79,7 @@ public extension LocalBible {
         return localBible
     }
     
-    func createLocalBible(from bible: BRBible, in language: BRLanguage) -> LocalBible {
+   static func createLocalBible(from bible: BRBible, in language: BRLanguage) -> LocalBible {
         let localBible = LocalBible()
         localBible.uid = bible.uid ?? ""
         localBible.symbol = bible.symbol ?? ""

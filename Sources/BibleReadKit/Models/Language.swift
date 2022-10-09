@@ -21,6 +21,7 @@ public struct BRLanguage: Codable, Hashable {
     public var uid: String?
     public var vernacularName: String?
     public var wolApi: String?
+    public var audioApiCode: String?
     @ServerTimestamp public var createdAt: Timestamp?
 }
 
@@ -33,6 +34,7 @@ public final class LocalLanguage: Object, ObjectKeyIdentifiable {
     @Persisted public var name: String = ""
     @Persisted public var uid: String = ""
     @Persisted public var vernacularName: String = ""
+    @Persisted public var audioApiCode: String?
 }
 
 public extension BRLanguage {
