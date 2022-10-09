@@ -15,7 +15,7 @@ public struct BRBible: Codable, Hashable {
     public static func == (lhs: BRBible, rhs: BRBible) -> Bool {
         return lhs.id == rhs.id
     }
-    @DocumentID var id: String?
+    @DocumentID public var id: String?
     public var uid: String?
     public var name: String?
     public var contentApi: String?
