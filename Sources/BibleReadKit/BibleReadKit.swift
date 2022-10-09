@@ -102,9 +102,5 @@ public actor BibleReadKit {
         }
         return (_chapter, totalProgressCount, bookProgressCount)
     }
-    
-    public func downloadLocalBible(from bible: BRBible) async throws -> LocalBible {
-        let localBible = try await firBibleService.download(bible: bible)
-        return localBible
-    }
+  
 }
