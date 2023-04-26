@@ -50,24 +50,8 @@ public struct LangValue: Codable {
 // MARK: - Edition
 public struct Edition: Codable {
  public   let title: String
- public   let symbol: Symbol
+ public   let symbol: String
  public   let contentAPI: String?
-}
-
-public enum Symbol: String, Codable {
-    case bi10 = "bi10"
-    case bi12 = "bi12"
-    case bi22 = "bi22"
-    case bifgn = "bifgn"
-    case bimt = "bimt"
-    case by = "by"
-    case int = "int"
-    case nwt = "nwt"
-    case nwths = "nwths"
-    case nwtsty = "nwtsty"
-    case rh = "rh"
-    case sbi1 = "sbi1"
-    case sbi2 = "sbi2"
 }
 
 // MARK: - LangLang

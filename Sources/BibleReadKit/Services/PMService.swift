@@ -26,7 +26,7 @@ public actor PMService {
         if let files = decodedResponse.files, let langKeyFiles = files[audioCode], let mp3s = langKeyFiles.mp3 {
             
             var _mp3s = mp3s
-            _mp3s.removeFirst()
+            //_mp3s.removeFirst()
             return _mp3s
         }
         return nil

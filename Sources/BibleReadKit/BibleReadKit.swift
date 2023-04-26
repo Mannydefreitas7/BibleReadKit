@@ -1,7 +1,7 @@
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import SwiftUI
-
+// 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
 public actor BibleReadKit {
     
     public let jwService = JWService.shared
@@ -128,10 +128,10 @@ public actor BibleReadKit {
         
         if let locale = language.locale, let jwBibles = try await jwService.getBibleEditions(locale: locale) {
            try await jwBibles.editions.asyncForEach { edition in
-               let bibleData = try await jwService.getBible(locale: locale, symbol: edition.symbol.rawValue)
+               let bibleData = try await jwService.getBible(locale: locale, symbol: edition.symbol)
                if let bibleData {
                    var _bible = BRBible()
-                   _bible.symbol = edition.symbol.rawValue
+                   _bible.symbol = edition.symbol
                    _bible.name = bibleData.editionData.vernacularFullName
                    _bible.language = language
                    _bible.uid = UUID().uuidString

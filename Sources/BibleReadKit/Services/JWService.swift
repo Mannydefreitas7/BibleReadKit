@@ -31,7 +31,7 @@ public actor JWService {
         let bibleEditions: LangValue? = try await getBibleEditions(locale: locale)
         if let bibleEditions {
             // filter by symbol & get url
-            let edition: Edition? = bibleEditions.editions.filter { $0.symbol.rawValue == symbol }.first
+            let edition: Edition? = bibleEditions.editions.filter { $0.symbol == symbol }.first
             if let edition, let contentApi = edition.contentAPI {
         
                 guard let url = URL(string: contentApi) else {
@@ -80,7 +80,7 @@ public actor JWService {
             let bibleEditions: LangValue? = try await getBibleEditions(locale: locale)
             if let bibleEditions {
                 // filter by symbol & get url
-                let edition: Edition? = bibleEditions.editions.filter { $0.symbol.rawValue == symbol }.first
+                let edition: Edition? = bibleEditions.editions.filter { $0.symbol == symbol }.first
                 if let edition, let contentApi = edition.contentAPI, let range = bookVerseRange(book: bookNumber, chapter: chapterNumber) {
                     guard let url = URL(string: "\(contentApi)data/\(range)") else {
                         print("Invalid URL")
