@@ -11,7 +11,7 @@ import FirebaseFirestoreSwift
 import RealmSwift
 
 // Language
-public struct BRLanguage: Codable, Hashable {
+public struct BRLanguage: Codable {
     @DocumentID public var id: String?
     public var api : String?
     public var audioCode: String?
@@ -37,15 +37,23 @@ public final class LocalLanguage: Object, ObjectKeyIdentifiable {
     @Persisted public var audioApiCode: String?
 }
 
-public extension BRLanguage {
+extension BRLanguage: Identifiable, Hashable {
     
-    func mockLanguage() -> BRLanguage {
+    public static func == (lhs: BRLanguage, rhs: BRLanguage) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(uid)
+    }
+    
+    public func mockLanguage() -> BRLanguage {
         
         let language = BRLanguage(id: UUID().uuidString, api: "", audioCode: "E", isRTL: false, locale: "en", name: "English", uid: UUID().uuidString, vernacularName: "English", wolApi: "", createdAt: .init(date: .now))
         return language
     }
     
-    func mockLanguages() -> [BRLanguage] {
+    public func mockLanguages() -> [BRLanguage] {
         
         let ids = [UUID().uuidString, UUID().uuidString, UUID().uuidString, UUID().uuidString, UUID().uuidString, UUID().uuidString]
         let languages : [BRLanguage] = ids.map { id in
