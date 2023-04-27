@@ -33,6 +33,22 @@ public struct JWBook: Codable {
   public  let hasAudio, hasMultimedia, hasStudyNotes: Bool?
 }
 
+public extension JWBook {
+    func toBRBook(from bible: BRBible, with bookNumber: Int, language: BRLanguage) -> BRBook {
+        var book: BRBook = BRBook()
+        book.bible = bible
+        book.bookNumber = bookNumber
+        book.chapterCount = Int(self.chapterCount ?? "0")
+        book.isDownloaded = false
+        book.language = language
+        book.name = self.standardName
+        book.shortName = self.standardAbbreviation
+        book.title = self.bookDisplayTitle
+        book.uid = UUID().uuidString
+        return book
+    }
+}
+
 
 // MARK: - JWLibrary
 public struct JWLibrary: Codable {
