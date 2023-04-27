@@ -130,13 +130,14 @@ public actor BibleReadKit {
            try await jwBibles.editions.asyncForEach { edition in
                let bibleData = try await jwService.getBible(locale: locale, symbol: edition.symbol)
                if let bibleData {
+                   let contentApi = "https://www.jw.org\(String(describing: bibleData.editionData.url))json/"
                    var _bible = BRBible()
                    _bible.symbol = edition.symbol
                    _bible.name = bibleData.editionData.vernacularFullName
                    _bible.language = language
                    _bible.uid = UUID().uuidString
                    _bible.isUploaded = false
-                   _bible.contentApi = bibleData.editionData.url
+                   _bible.contentApi = contentApi
                    _bible.wolApi = language.wolApi
                    _bible.createdAt = .none
                    _bible.version = 1
