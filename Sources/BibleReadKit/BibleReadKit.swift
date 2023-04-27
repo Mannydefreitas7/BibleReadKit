@@ -78,17 +78,17 @@ public actor BibleReadKit {
             let (wolChapter, gbChapter) = try await self.getChapterData(bible: bible, bookNumber: bookNumber, chapterNumber: chapterNumber)
     
             if let _ = wolChapter {
-                
-                if let symbol = bible.symbol, let language = bible.language, let audioCode = language.audioCode, let file = try await pubMediaService.getAudioFileUrl(bookNumber: bookNumber, chapterNumber: chapterNumber, symbol: symbol, audioCode: audioCode) {
-
-                    var mep3File = BRMP3File()
-                    mep3File.title = file.title
-                    mep3File.id = UUID().uuidString
-                    mep3File.duration = file.duration
-                    mep3File.url = file.file?.url
-                    mep3File.markers = file.markers
-                    _chapter.mp3File = mep3File
-                }
+                // TODO: Create a layer for fecthing mp3s on a front-end
+//                if let symbol = bible.symbol, let language = bible.language, let audioCode = language.audioCode, let file = try await pubMediaService.getAudioFileUrl(bookNumber: bookNumber, chapterNumber: chapterNumber, symbol: symbol, audioCode: audioCode) {
+//
+//                    var mep3File = BRMP3File()
+//                    mep3File.title = file.title
+//                    mep3File.id = UUID().uuidString
+//                    mep3File.duration = file.duration
+//                    mep3File.url = file.file?.url
+//                    mep3File.markers = file.markers
+//                    _chapter.mp3File = mep3File
+//                }
 
                 if let verses = try await wolService.getBibleVerses(locale: locale, bookNumber: bookNumber, chapterNumber: chapterNumber) {
                     _chapter.verseCount = verses.count
