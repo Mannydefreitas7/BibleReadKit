@@ -129,8 +129,8 @@ public actor BibleReadKit {
         if let locale = language.locale, let jwBibles = try await jwService.getBibleEditions(locale: locale) {
            try await jwBibles.editions.asyncForEach { edition in
                let bibleData = try await jwService.getBible(locale: locale, symbol: edition.symbol)
-               if let bibleData {
-                   let contentApi = "https://www.jw.org\(String(describing: bibleData.editionData.url))json/"
+               if let bibleData, let url = bibleData.editionData.url {
+                   let contentApi = "https://www.jw.org\(url)json/"
                    var _bible = BRBible()
                    _bible.symbol = edition.symbol
                    _bible.name = bibleData.editionData.vernacularFullName
