@@ -45,6 +45,7 @@ public extension JWBook {
         book.shortName = self.standardAbbreviation
         book.title = self.bookDisplayTitle
         book.uid = UUID().uuidString
+        book.type = bookNumber > 39 ? BRBookType.greek.rawValue : BRBookType.hebrew.rawValue
         return book
     }
 }
