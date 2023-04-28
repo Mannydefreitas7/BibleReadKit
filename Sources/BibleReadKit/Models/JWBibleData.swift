@@ -42,7 +42,7 @@ public extension JWBook {
         book.isDownloaded = false
         book.language = language
         book.name = self.standardName
-        book.shortName = self.standardAbbreviation
+        book.shortName = self.officialAbbreviation
         book.title = self.bookDisplayTitle
         book.uid = UUID().uuidString
         book.type = bookNumber > 39 ? BRBookType.greek.rawValue : BRBookType.hebrew.rawValue
