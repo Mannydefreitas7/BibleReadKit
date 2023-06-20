@@ -6,14 +6,12 @@
 //
 
 import Foundation
-import FirebaseFirestore
-import FirebaseFirestoreSwift
 import RealmSwift
 
 
 // Writer
 public struct BRWriter: Codable, Hashable {
-    @DocumentID public var id: String?
+    public var id: String?
     public var uid: String?
     public var name: String?
     public var lifeSpan: String?

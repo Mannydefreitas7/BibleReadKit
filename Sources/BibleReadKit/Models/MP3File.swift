@@ -6,9 +6,6 @@
 //
 
 import Foundation
-
-import FirebaseFirestore
-import FirebaseFirestoreSwift
 import RealmSwift
 
 
@@ -17,7 +14,7 @@ public struct BRMP3File: Identifiable, Codable, Hashable {
     public static func == (lhs: BRMP3File, rhs: BRMP3File) -> Bool {
         return lhs.id == rhs.id
     }
-    @DocumentID public var id: String?
+    public var id: String?
     public var title: String?
     public var url: String?
     public var markers: Markers?

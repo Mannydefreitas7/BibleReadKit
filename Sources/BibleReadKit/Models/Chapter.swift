@@ -6,8 +6,7 @@
 //
 
 import Foundation
-import FirebaseFirestore
-import FirebaseFirestoreSwift
+
 import RealmSwift
 
 
@@ -16,7 +15,7 @@ public struct BRChapter: Identifiable, Codable, Hashable {
     public static func == (lhs: BRChapter, rhs: BRChapter) -> Bool {
         return lhs.id == rhs.id
     }
-    @DocumentID public var id: String?
+    public var id: String?
     public var book: BRBook?
     public var chapterNumber: Int?
     public var uid: String?

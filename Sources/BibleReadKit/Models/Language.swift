@@ -6,13 +6,11 @@
 //
 
 import Foundation
-import FirebaseFirestore
-import FirebaseFirestoreSwift
 import RealmSwift
 
 // Language
 public struct BRLanguage: Codable {
-    @DocumentID public var id: String?
+    public var id: String?
     public var api : String?
     public var audioCode: String?
     public var isRTL: Bool?
@@ -22,7 +20,7 @@ public struct BRLanguage: Codable {
     public var vernacularName: String?
     public var wolApi: String?
     public var audioApiCode: String?
-    @ServerTimestamp public var createdAt: Timestamp?
+    public var createdAt: Date?
 }
 
 public final class LocalLanguage: Object, ObjectKeyIdentifiable {
@@ -49,7 +47,7 @@ extension BRLanguage: Identifiable, Hashable {
     
     public func mockLanguage() -> BRLanguage {
         
-        let language = BRLanguage(id: UUID().uuidString, api: "", audioCode: "E", isRTL: false, locale: "en", name: "English", uid: UUID().uuidString, vernacularName: "English", wolApi: "", createdAt: .init(date: .now))
+        let language = BRLanguage(id: UUID().uuidString, api: "", audioCode: "E", isRTL: false, locale: "en", name: "English", uid: UUID().uuidString, vernacularName: "English", wolApi: "", createdAt: .now)
         return language
     }
     
@@ -57,7 +55,7 @@ extension BRLanguage: Identifiable, Hashable {
         
         let ids = [UUID().uuidString, UUID().uuidString, UUID().uuidString, UUID().uuidString, UUID().uuidString, UUID().uuidString]
         let languages : [BRLanguage] = ids.map { id in
-            return  BRLanguage(id: id, api: "", audioCode: "E", isRTL: false, locale: "en", name: "Language", uid: id, vernacularName: id, wolApi: "", createdAt: .init(date: .now))
+            return  BRLanguage(id: id, api: "", audioCode: "E", isRTL: false, locale: "en", name: "Language", uid: id, vernacularName: id, wolApi: "", createdAt: .now)
         }
         return languages
     }

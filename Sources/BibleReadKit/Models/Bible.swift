@@ -6,8 +6,6 @@
 //
 
 import Foundation
-import FirebaseFirestore
-import FirebaseFirestoreSwift
 import RealmSwift
 
 // Bible
@@ -15,7 +13,7 @@ public struct BRBible: Codable, Hashable {
     public static func == (lhs: BRBible, rhs: BRBible) -> Bool {
         return lhs.id == rhs.id
     }
-    @DocumentID public var id: String?
+    public var id: String?
     public var uid: String?
     public var name: String?
     public var contentApi: String?
@@ -28,7 +26,7 @@ public struct BRBible: Codable, Hashable {
     public var books: [BRBook]?
     public var isUploaded: Bool?
     public var bibleAudioApiSymbol: String?
-    @ServerTimestamp public var createdAt: Timestamp?
+    public var createdAt: Date?
     
     public func hash(into hasher: inout Hasher) {
         hasher.combine(uid)

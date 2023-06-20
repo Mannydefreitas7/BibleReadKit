@@ -6,8 +6,7 @@
 //
 
 import Foundation
-import FirebaseFirestore
-import FirebaseFirestoreSwift
+
 import RealmSwift
 
 // Verse

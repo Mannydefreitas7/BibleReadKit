@@ -1,14 +1,11 @@
-import FirebaseFirestore
-import FirebaseFirestoreSwift
 import SwiftUI
-// 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
+
 public actor BibleReadKit {
     
     public let jwService = JWService.shared
     public let wolService = WOLService.shared
     public let gbService = GBService.shared
     public let pubMediaService = PMService.shared
-    private let firEncoder = Firestore.Encoder()
     
     public enum BibleSourceType {
         case secular
