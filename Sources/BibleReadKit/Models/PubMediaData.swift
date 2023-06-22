@@ -22,10 +22,30 @@ public struct PubMediaItem: Codable {
 // MARK: - FilesE
 public struct PMFile: Codable {
     public let mp3: [PMMp3]?
+    public let jwpub: [JWPubFile]?
 
     enum CodingKeys: String, CodingKey {
         case mp3 = "MP3"
+        case jwpub = "JWPUB"
     }
+}
+
+// MARK: - Epub
+public struct JWPubFile: Codable {
+    let title: String?
+    let file: PubImage?
+    let filesize: Int?
+    let trackImage: PubImage?
+    let label: String?
+    let track: Int?
+    let hasTrack: Bool?
+    let pub: String?
+    let docid, booknum: Int?
+    let mimetype, edition, editionDescr, format: String?
+    let formatDescr, specialty, specialtyDescr: String?
+    let subtitled: Bool?
+    let frameWidth, frameHeight, frameRate, duration: Int?
+    let bitRate: Int?
 }
 
 // MARK: - Mp3

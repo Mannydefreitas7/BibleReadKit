@@ -11,6 +11,26 @@ public actor JWService {
     
     static public let shared = JWService()
     private let API_URL: String = "https://www.jw.org/en/library/bible/json/"
+    private let PUBMEDIA_API: String = "https://b.jw-cdn.org/apis/pub-media/GETPUBMEDIALINKS"
+    let decoder = JSONDecoder()
+    // Get fetch file from pubmedia
+    // "?booknum=0&output=json&pub=bi12&fileformat=JWPUB&alllangs=0&langwritten=E"
+    @available(macOS 12.0, *)
+    public func getPublicationFile(symbol: String, language: String = "E") async throws -> URL? {
+        guard let url = URL(string: "\(PUBMEDIA_API)?output=json&pub=\(symbol)&fileformat=JWPUB&alllangs=0&langwritten=\(language)") else {
+            print("Invalid URL")
+            return nil
+        }
+        
+        let (data, _) = try await URLSession.shared.data(from: url)
+        let pubmedia = try decoder.decode(PubMediaItem.self, from: data)
+
+        
+        let downloadService = DownloadService.shared
+        guard let jwpubString = pubmedia.files?[language]?.jwpub?.first?.file?.url, let jwpubURL = URL(string: jwpubString) else { return nil }
+        let fileURL = try await downloadService.download(from: jwpubURL)
+        return fileURL
+    }
     
     // Get bible translations
     @available(macOS 12.0, *)

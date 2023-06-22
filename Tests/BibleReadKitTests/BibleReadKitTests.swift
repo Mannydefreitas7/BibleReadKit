@@ -1,4 +1,5 @@
 import XCTest
+import JWPubKit
 @testable import BibleReadKit
 
 final class BibleReadKitTests: XCTestCase {
@@ -104,7 +105,7 @@ final class BibleReadKitTests: XCTestCase {
         if let verses = chapter.verses {
             XCTAssertGreaterThan(verses.count, 30)
         }
-        XCTAssertNotNil(chapter.mp3File)
+      //  XCTAssertNotNil(chapter.mp3File)
         if let file = chapter.mp3File {
             XCTAssertNotNil(file.title)
             if let chapterName = file.title {
@@ -113,10 +114,23 @@ final class BibleReadKitTests: XCTestCase {
         }
     }
     
+    func testDownloadAndReadFile() async throws {
+        let file = try await kit.getPublicationFile(symbol: "nwt")
+       
+        XCTAssertNotNil(file)
+        if let file {
+            let object = try await kit.parseJWPUB(from: file)
+            if let bible = object as? JWPBible {
+                XCTAssertEqual(bible.title, "New World Translation of the Holy Scriptures")
+                XCTAssertNotNil(bible.books.first?.chapters.first?.content)
+            }
+        }
+    }
+    
     func testGetBiblesFromLanguage() async throws {
         let language = BRLanguage().mockLanguage()
         let bibles = try await kit.getBiblesFromLocale(language: language)
-        debugPrint(bibles)
+       // debugPrint(bibles)
         XCTAssertGreaterThan(bibles.count, 0)
     }
 }

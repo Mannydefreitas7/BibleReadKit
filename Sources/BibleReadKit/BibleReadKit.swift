@@ -1,4 +1,5 @@
 import SwiftUI
+import JWPubKit
 
 public actor BibleReadKit {
     
@@ -159,4 +160,19 @@ public actor BibleReadKit {
         }
         return bibles
     }
+    
+    public func getPublicationFile(symbol: String, language: String = "E") async throws -> URL? {
+        return try await jwService.getPublicationFile(symbol: symbol, language: language)
+    }
+    
+    public func parseJWPUB(from url: URL) async throws -> JWPUBObject? {
+        let jwpubKit = JWPubKit.shared
+        
+        let progress: Progress = .init()
+        let object = try await jwpubKit.read(at: url, progress: progress)
+        return object
+    }
+
 }
+
+
