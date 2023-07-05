@@ -121,10 +121,10 @@ public actor BibleReadKit {
         return (_chapter, totalProgressCount, bookProgressCount)
     }
     
-    public func getBiblesFromLocale(language: BRLanguage) async throws -> [BRBible] {
+    public func getBiblesFromLocale(locale: String) async throws -> [BRBible] {
         var bibles = [BRBible]()
         
-        if let locale = language.locale, let jwBibles = try await jwService.getBibleEditions(locale: locale) {
+        if let jwBibles = try await jwService.getBibleEditions(locale: locale) {
            try await jwBibles.editions.asyncForEach { edition in
                let bibleData = try await jwService.getBible(locale: locale, symbol: edition.symbol)
                if let bibleData, let url = bibleData.editionData.url {
@@ -132,11 +132,9 @@ public actor BibleReadKit {
                    var _bible = BRBible()
                    _bible.symbol = edition.symbol
                    _bible.name = bibleData.editionData.vernacularFullName
-                   _bible.language = language
                    _bible.uid = UUID().uuidString
                    _bible.isUploaded = false
                    _bible.contentApi = contentApi
-                   _bible.wolApi = language.wolApi
                    _bible.createdAt = .none
                    _bible.version = 1
                    bibles.append(_bible)
@@ -144,12 +142,11 @@ public actor BibleReadKit {
             }
         }
         
-        if let locale = language.locale, let gbBibles = try await gbService.getBibleTranslations(locale: locale) {
+        if let gbBibles = try await gbService.getBibleTranslations(locale: locale) {
             gbBibles.forEach { translation in
                 var _bible = BRBible()
                 _bible.symbol = translation.abbreviation
                 _bible.name = translation.translation
-                _bible.language = language
                 _bible.uid = UUID().uuidString
                 _bible.isUploaded = false
                 _bible.contentApi = translation.url
