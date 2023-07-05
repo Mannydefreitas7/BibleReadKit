@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import JWPubKit
 
 public actor JWService {
     
@@ -16,7 +17,7 @@ public actor JWService {
     // Get fetch file from pubmedia
     // "?booknum=0&output=json&pub=bi12&fileformat=JWPUB&alllangs=0&langwritten=E"
     @available(macOS 12.0, *)
-    public func getPublicationFile(symbol: String, language: String = "E") async throws -> URL? {
+    public func getPublicationFile(symbol: ManifestPublication.AcceptedSymbols, language: String = "E") async throws -> URL? {
         guard let url = URL(string: "\(PUBMEDIA_API)?output=json&pub=\(symbol)&fileformat=JWPUB&alllangs=0&langwritten=\(language)") else {
             print("Invalid URL")
             return nil

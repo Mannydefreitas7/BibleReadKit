@@ -1,11 +1,10 @@
-import XCTest
-import JWPubKit
 @testable import BibleReadKit
+import JWPubKit
+import XCTest
 
 final class BibleReadKitTests: XCTestCase {
     private let kit = BibleReadKit()
 
-    
     func testGetChapterDataForJW() async throws {
         var bible = BRBible()
         var language = BRLanguage()
@@ -48,6 +47,7 @@ final class BibleReadKitTests: XCTestCase {
             XCTAssertEqual(count, 50)
         }
     }
+
     func testGetChapterCountForGB() async throws {
         var bible = BRBible()
         bible.symbol = "akjv"
@@ -105,7 +105,7 @@ final class BibleReadKitTests: XCTestCase {
         if let verses = chapter.verses {
             XCTAssertGreaterThan(verses.count, 30)
         }
-      //  XCTAssertNotNil(chapter.mp3File)
+        //  XCTAssertNotNil(chapter.mp3File)
         if let file = chapter.mp3File {
             XCTAssertNotNil(file.title)
             if let chapterName = file.title {
@@ -115,11 +115,12 @@ final class BibleReadKitTests: XCTestCase {
     }
     
     func testDownloadAndReadFile() async throws {
-        let file = try await kit.getPublicationFile(symbol: "nwt")
+        let file = try await kit.getPublicationFile(symbol: .nwt)
        
         XCTAssertNotNil(file)
         if let file {
-            let object = try await kit.parseJWPUB(from: file)
+            var progress: Progress = .init()
+            let object = try await kit.parseJWPUB(from: file, progress: progress)
             if let bible = object as? JWPBible {
                 XCTAssertEqual(bible.title, "New World Translation of the Holy Scriptures")
                 XCTAssertNotNil(bible.books.first?.chapters.first?.content)
@@ -130,7 +131,6 @@ final class BibleReadKitTests: XCTestCase {
     func testGetBiblesFromLanguage() async throws {
         let language = BRLanguage().mockLanguage()
         let bibles = try await kit.getBiblesFromLocale(language: language)
-       // debugPrint(bibles)
         XCTAssertGreaterThan(bibles.count, 0)
     }
 }

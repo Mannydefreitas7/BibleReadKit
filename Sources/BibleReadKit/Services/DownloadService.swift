@@ -33,8 +33,16 @@ public class DownloadService: NSObject, URLSessionDownloadDelegate {
         
         let (downloadURL, response) = try await URLSession.shared.download(from: url)
         guard let fileName = response.suggestedFilename else { throw "Could not get filename" }
-        let temporaryURL = documentsDirectory.appendingPathComponent(fileName, conformingTo: .jwpub)
-        try? FileManager.default.moveItem(at: downloadURL, to: temporaryURL)
+        let folderURL = documentsDirectory.appending(path: UUID().uuidString)
+        try FileManager.default.createDirectory(at: folderURL, withIntermediateDirectories: true)
+        let temporaryURL = folderURL.appendingPathComponent(fileName, conformingTo: .jwpub)
+        debugPrint(temporaryURL.absoluteString)
+        if FileManager.default.fileExists(atPath: temporaryURL.absoluteString) {
+            debugPrint("FILE EXISTS: \(temporaryURL.absoluteString)")
+            try FileManager.default.removeItem(at: temporaryURL)
+        }
+       
+        try FileManager.default.moveItem(at: downloadURL, to: temporaryURL)
         return temporaryURL
     }
 

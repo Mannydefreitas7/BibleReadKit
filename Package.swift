@@ -15,7 +15,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/scinfu/SwiftSoup.git", from: "2.4.3"),
         .package(url: "https://github.com/realm/realm-swift.git",.upToNextMajor(from: "10.31.0")),
-        .package(url: "https://github.com/AppyWebCo/JWPubKit.git", .upToNextMajor(from: "0.0.5"))
+        .package(url: "https://github.com/AppyWebCo/JWPubKit.git", .upToNextMajor(from: "0.0.8"))
     ],
     targets: [
         .target(
